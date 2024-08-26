@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificación para Ecotec Tláhuac</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"], input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; 
+        }
+        input[type="submit"] {
+            background-color: #4CAF50; 
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s; 
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049; 
+        }
+        #mensajeContainer {
+            margin-top: 20px;
+            display: none; 
+        }
+        #mensajeWhatsApp {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .exito {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Notificación para EcoTec Tláhuac</h2>
+        <form id="notificationForm" onsubmit="return false;">
+            
+            <label for="departamento">Departamento que solicita:</label>
+            <input type="text" id="departamento" name="departamento" required>
+            
+            <label for="tipoBasura">Tipo de basura:</label>
+            <input type="text" id="tipoBasura" name="tipoBasura" required>
+            
+            <label for="mensaje">Mensaje para enviar al grupo:</label>
+            <textarea id="mensaje" name="mensaje" rows="3" required>¡Hola! Nuestro bote de basura necesita ser vaciado 🤭 gracias</textarea>
+            
+            <input type="submit" value="Enviar a WhatsApp" onclick="enviarWhatsApp()">
+        </form>
+
+        <div id="mensajeContainer">
+            <h3>Mensaje para WhatsApp:</h3>
+            <textarea id="mensajeWhatsApp" rows="6" readonly></textarea>
+            <a id="enlaceWhatsApp" href="#" target="_blank">Enviar mensaje a WhatsApp</a>
+            <div class="exito" id="mensajeExito"></div>
+        </div>
+    </div>
+
+    <script>
+        function enviarWhatsApp() {
+            var departamento = document.getElementById('departamento').value;
+            var tipoBasura = document.getElementById('tipoBasura').value;
+            var mensaje = document.getElementById('mensaje').value;
+
+            var mensajeWhatsApp = `¡Hola! Nuestro bote de basura necesita ser vaciado 🤭 gracias:\n\n` +
+                                  `Departamento que solicita: ${departamento}\n` +
+                                  `Tipo de basura: ${tipoBasura}`;
+
+            document.getElementById('mensajeWhatsApp').value = mensajeWhatsApp;
+
+            var encodedMensaje = encodeURIComponent(mensajeWhatsApp);
+            var enlace = "https://api.whatsapp.com/send?text=" + encodedMensaje;
+            window.open(enlace);
+            document.getElementById('mensajeExito').innerText = 'Mensaje enviado automáticamente a WhatsApp.';
+        }
+    </script>
+</body>
+</html>
